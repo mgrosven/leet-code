@@ -23,33 +23,16 @@ func main() {
 }
 
 func isValidSudoku(board [][]byte) bool {
-	row := make(map[int][9]bool)
-	column := make(map[int][9]bool)
-	box := make(map[int][9]bool)
-
+	var rows, columns, boxes [9][9]bool
 	for i, r := range board {
 		for j, e := range r {
 			if e != '.' {
 				v := e - '0' - 1
 				b := (i/3)*3 + (j / 3)
-				if row[i][v] {
+				if rows[i][v] || columns[j][v] || boxes[b][v] {
 					return false
 				}
-				if column[j][v] {
-					return false
-				}
-				if box[b][v] {
-					return false
-				}
-				tempRow := row[i]
-				tempRow[v] = true
-				row[i] = tempRow
-				tempColumn := column[j]
-				tempColumn[v] = true
-				column[j] = tempColumn
-				tempBox := box[b]
-				tempBox[v] = true
-				box[b] = tempBox
+				rows[i][v], columns[j][v], boxes[b][v] = true, true, true
 			}
 		}
 	}
