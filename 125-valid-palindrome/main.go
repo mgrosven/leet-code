@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"unicode"
 )
 
@@ -19,26 +18,20 @@ func main() {
 }
 
 func isPalindrome(s string) bool {
-	if len(s) < 2 {
-		return true
-	}
-	s = strings.ToLower(s)
-	var result []rune
-	for _, ch := range s {
-		if unicode.IsLetter(ch) || unicode.IsDigit(ch) {
-			result = append(result, ch)
+	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+		for i < j && !(unicode.IsLetter(rune(s[i])) || unicode.IsDigit(rune(s[i]))) {
+			i++
 		}
-	}
-	start := 0
-	end := len(result) - 1
+		for i < j && !(unicode.IsLetter(rune(s[j])) || unicode.IsDigit(rune(s[j]))) {
+			j--
+		}
+		if i == j {
+			break
+		}
 
-	for start < end {
-		if result[start] != result[end] {
+		if unicode.ToLower(rune(s[i])) != unicode.ToLower(rune(s[j])) {
 			return false
 		}
-		start++
-		end--
 	}
-
 	return true
 }
