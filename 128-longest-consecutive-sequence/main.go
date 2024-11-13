@@ -15,7 +15,7 @@ func longestConsecutive(nums []int) int {
 		m[n] = n
 	}
 
-	for n, _ := range m {
+	for n := range m {
 		if _, ok := m[n-1]; ok {
 			continue
 		} else {
