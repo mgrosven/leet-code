@@ -12,25 +12,22 @@ func main() {
 
 func trap(height []int) int {
 
-	total := 0
-	l := len(height)
-	if l >= 3 {
-		maxLeft := make([]int, l)
-		maxRight := make([]int, l)
-
-		maxLeft[0] = height[0]
-		for i := 1; i < l; i++ {
-			maxLeft[i] = max(maxLeft[i-1], height[i])
-		}
-
-		maxRight[l-1] = height[l-1]
-		for j := l - 2; j >= 0; j-- {
-			maxRight[j] = max(maxRight[j+1], height[j])
-		}
-
-		for i := 0; i < l; i++ {
-			total += max(0, min(maxLeft[i], maxRight[i])-height[i])
+	left, right := 0, len(height)-1
+	leftMax, rightMax, water := height[left], height[right], 0
+	for left < right {
+		if leftMax < rightMax {
+			left++
+			if height[left] > leftMax {
+				leftMax = height[left]
+			}
+			water += leftMax - height[left]
+		} else {
+			right--
+			if height[right] > rightMax {
+				rightMax = height[right]
+			}
+			water += rightMax - height[right]
 		}
 	}
-	return total
+	return water
 }
