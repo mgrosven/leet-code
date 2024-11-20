@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	a := []int{4, 2, 3}
+	a := []int{4, 2, 0, 3, 2, 5}
 	r := trap(a)
 	fmt.Println(r)
 }
@@ -13,26 +13,23 @@ func main() {
 func trap(height []int) int {
 
 	total := 0
-	if len(height) >= 3 {
-		i, j := 0, 1
+	l := len(height)
+	if l >= 3 {
+		maxLeft := make([]int, l)
+		maxRight := make([]int, l)
 
-		trapped := 0
-		for i < len(height)-1 && j < len(height) {
+		maxLeft[0] = height[0]
+		for i := 1; i < l; i++ {
+			maxLeft[i] = max(maxLeft[i-1], height[i])
+		}
 
-			if height[i] > height[j] {
-				trapped += height[i] - height[j]
-				j++
-			} else {
-				total += trapped
-				trapped = 0
-				i = j
-				j++
-			}
-			if j == len(height) {
-				i++
-				j = i + 1
-				trapped = 0
-			}
+		maxRight[l-1] = height[l-1]
+		for j := l - 2; j >= 0; j-- {
+			maxRight[j] = max(maxRight[j+1], height[j])
+		}
+
+		for i := 0; i < l; i++ {
+			total += max(0, min(maxLeft[i], maxRight[i])-height[i])
 		}
 	}
 	return total
