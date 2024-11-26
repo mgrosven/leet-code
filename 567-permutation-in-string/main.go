@@ -14,43 +14,28 @@ func main() {
 }
 
 func checkInclusion(s1 string, s2 string) bool {
-	if len(s1) > len(s2) {
-		return false
-	}
-	countS1 := make([]int, 26)
-	windowCount := make([]int, 26)
+	l, count := 0, [26]int{}
 
-	for _, r := range s1 {
-		countS1[r-'a']++
+	// set up counts for s1
+	for i := range s1 {
+		count[s1[i]-'a']++
 	}
 
-	for i := 0; i < len(s1); i++ {
-		windowCount[s2[i]-'a']++
-	}
+	// build and check window
+	for r := range s2 {
+		// reduce current letter
+		count[s2[r]-'a']--
 
-	if matches(countS1, windowCount) {
-		return true
-	}
-
-	for i := len(s1); i < len(s2); i++ {
-		// Add the new character to the window
-		windowCount[s2[i]-'a']++
-		// Remove the first character of the previous window
-		windowCount[s2[i-len(s1)]-'a']--
-		// Check if the current window matches
-		if matches(countS1, windowCount) {
+		// if all 0, permutation found
+		if count == [26]int{} {
 			return true
 		}
-	}
 
-	return false
-}
-
-func matches(a, b []int) bool {
-	for i := 0; i < 26; i++ {
-		if a[i] != b[i] {
-			return false
+		// if window too big, re-add first character and shift window
+		if r+1 > len(s1) {
+			count[s2[l]-'a']++
+			l++
 		}
 	}
-	return true
+	return false
 }
