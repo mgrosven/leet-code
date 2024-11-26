@@ -4,7 +4,7 @@ import "fmt"
 
 func main() {
 	s1 := "ab"
-	s2 := "eidboaoo"
+	s2 := "eidbaooo"
 	r := checkInclusion(s1, s2)
 	if r {
 		fmt.Println("Contains Permuation")
@@ -32,7 +32,7 @@ func checkInclusion(s1 string, s2 string) bool {
 		}
 
 		// if window too big, re-add first character and shift window
-		if r+1 > len(s1) {
+		if r+1 >= len(s1) {
 			count[s2[l]-'a']++
 			l++
 		}
