@@ -47,34 +47,23 @@ func printList(head *ListNode) {
 }
 
 func removeNthFromEnd(head *ListNode, n int) *ListNode {
-	reversed := reverseList(head)
-	cur := reversed
+	p1 := head
+	for i := 0; i < n; i++ {
+		p1 = p1.Next
+	}
+
 	var prev *ListNode
-	i := 1
-	for i < n && cur != nil {
-		prev = cur
-		cur = cur.Next
-		i++
+	p2 := head
+	for p1 != nil {
+		p1 = p1.Next
+		prev = p2
+		p2 = p2.Next
 	}
 
 	if prev == nil {
-		reversed = cur.Next
-	} else {
-		prev.Next = cur.Next
+		return head.Next
 	}
 
-	return reverseList(reversed)
-}
-
-func reverseList(head *ListNode) *ListNode {
-	var prev *ListNode
-	curr := head
-
-	for curr != nil {
-		nextNode := curr.Next
-		curr.Next = prev
-		prev = curr
-		curr = nextNode
-	}
-	return prev
+	prev.Next = p2.Next
+	return head
 }
