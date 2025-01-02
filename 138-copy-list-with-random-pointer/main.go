@@ -52,20 +52,31 @@ func copyRandomList(head *Node) *Node {
 		return nil
 	}
 
-	nodeMap := make(map[*Node]*Node)
-
 	cur := head
 	for cur != nil {
-		nodeMap[cur] = &Node{Val: cur.Val}
-		cur = cur.Next
+		copy := &Node{Val: cur.Val, Next: cur.Next}
+		cur.Next = copy
+		cur = copy.Next
 	}
 
 	cur = head
 	for cur != nil {
-		nodeMap[cur].Next = nodeMap[cur.Next]
-		nodeMap[cur].Random = nodeMap[cur.Random]
+		if cur.Random != nil {
+			cur.Next.Random = cur.Random.Next
+		}
+		cur = cur.Next.Next
+	}
+
+	cur = head
+	newHead := head.Next
+	for cur != nil {
+		copy := cur.Next
+		cur.Next = copy.Next
+		if copy.Next != nil {
+			copy.Next = copy.Next.Next
+		}
 		cur = cur.Next
 	}
 
-	return nodeMap[head]
+	return newHead
 }
