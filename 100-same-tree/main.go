@@ -1,7 +1,5 @@
 package main
 
-import "math"
-
 func main() {
 
 	// l1 := makeList([]int{1, 2, 3, 4})
