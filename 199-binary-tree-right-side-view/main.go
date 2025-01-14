@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 func main() {
 
 	// l1 := makeTree([]int{1, 2, 3, 4})
