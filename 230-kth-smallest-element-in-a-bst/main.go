@@ -53,25 +53,21 @@ type TreeNode struct {
 }
 
 func kthSmallest(root *TreeNode, k int) int {
-	var result int
-	var count int
+	c := make(chan int)
+	go walk(root, c)
 
-	var inOrder func(node *TreeNode)
-	inOrder = func(node *TreeNode) {
-		if node == nil || count >= k {
-			return
-		}
-
-		inOrder(node.Left)
-
-		count++
-		if count == k {
-			result = node.Val
-			return
-		}
-
-		inOrder(node.Right)
+	for i := 1; i < k; i++ {
+		<-c
 	}
-	inOrder(root)
-	return result
+	return <-c
+}
+
+func walk(root *TreeNode, c chan int) {
+	if root == nil {
+		return
+	}
+
+	walk(root.Left, c)
+	c <- root.Val
+	walk(root.Right, c)
 }
