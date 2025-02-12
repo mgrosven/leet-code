@@ -9,11 +9,19 @@ func main() {
 }
 
 func subsets(nums []int) [][]int {
-	res := [][]int{{}}
-	for _, n := range nums {
-		for _, r := range res {
-			res = append(res, append([]int{n}, r...))
-		}
-	}
+	var res [][]int
+	backtrack(&res, []int{}, nums, 0)
 	return res
+}
+
+func backtrack(result *[][]int, current []int, nums []int, start int) {
+	subsetCopy := make([]int, len(current))
+	copy(subsetCopy, current)
+	*result = append(*result, subsetCopy)
+
+	for i := start; i < len(nums); i++ {
+		current = append(current, nums[i])
+		backtrack(result, current, nums, i+1)
+		current = current[:len(current)-1]
+	}
 }
